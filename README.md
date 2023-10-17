@@ -19,4 +19,4 @@ pip install -r requirements.txt
 
 ### Inference module
 
-
+### Analysis of results
