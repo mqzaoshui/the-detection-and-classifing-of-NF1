@@ -1,4 +1,4 @@
-# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
+# Modules for v5 and transfomer
 """
 Common modules
 """
@@ -26,7 +26,7 @@ from utils.general import (LOGGER, check_requirements, check_suffix, check_versi
                            make_divisible, non_max_suppression, scale_coords, xywh2xyxy, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import copy_attr, time_sync
-# add
+# add transformer 
 import torch.nn.functional as F
 from torchvision.ops import DeformConv2d
 from utils.plots import color_list, plot_one_box
@@ -201,7 +201,7 @@ class RobustConv2(nn.Module):
         return x
 
 class SPPCSPC(nn.Module):
-    # CSP原理参考 https://github.com/WongKinYiu/CrossStagePartialNetworks
+    # CSP Principle Reference: https://github.com/WongKinYiu/CrossStagePartialNetworks
     def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5, k=(5, 9, 13)):
         super(SPPCSPC, self).__init__()
         c_ = int(2 * c2 * e)  # hidden channels
@@ -231,7 +231,7 @@ class CSPLayer(nn.Module):
         self.fc1 = nn.Linear(c, c, bias=False)
         self.fc2 = nn.Linear(c, c, bias=False)
 
-        # 扩展模块
+        # expansion module xyh add for the attention module
         self.transformer_attention = self._create_transformer_attention(c)
         self.bifpn = self._create_bifpn(c)
         self.se = self._create_se(c)
@@ -246,13 +246,13 @@ class CSPLayer(nn.Module):
         x = self.ma(self.q(x), self.k(x), self.v(x))[0] + x
         x = self.fc2(self.fc1(x)) + x
         return x
-
+# Add the transformer moduls
     def _create_transformer_attention(self, c):
-        """基于transformer的自注意力机制"""
+        """Transformer-based Self-Attention Mechanism"""
         return nn.MultiheadAttention(embed_dim=c, num_heads=8)
 
     def _create_bifpn(self, c):
-        """BIFPN特征融合方式"""
+        """BIFPN feature fusion method"""
         layers = [
             nn.Conv2d(c, c, kernel_size=3, padding=1),
             nn.BatchNorm2d(c),
@@ -262,7 +262,7 @@ class CSPLayer(nn.Module):
         return nn.Sequential(*layers)
 
     def _create_se(self, c):
-        """SE 注意力模块"""
+        """SE Attention Module"""
         return nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             nn.Conv2d(c, c // 16, 1),
@@ -272,7 +272,7 @@ class CSPLayer(nn.Module):
         )
 
     def _create_cbam(self, c):
-        """CBAM 注意力模块"""
+        """CBAM Attention Module"""
         return nn.Sequential(
             nn.Conv2d(c, c, kernel_size=7, padding=3, groups=c),
             nn.BatchNorm2d(c),
@@ -280,7 +280,7 @@ class CSPLayer(nn.Module):
         )
 
     def _create_sa(self, c):
-        """SA 注意力模块"""
+        """SA Attention Module"""
         return nn.Sequential(
             nn.Conv2d(c, c, kernel_size=1),
             nn.BatchNorm2d(c),
@@ -288,11 +288,11 @@ class CSPLayer(nn.Module):
         )
 
     def _create_deform_conv(self, c):
-        """基于变形卷积的模块"""
+        """Deformation-based Convolution Module"""
         return DeformConv2d(c, c, kernel_size=3, padding=1)
 
     def _create_gate_attention(self, c):
-        """门控注意力模块"""
+        """Gated Attention Module"""
         return nn.Sequential(
             nn.Conv2d(c, c, kernel_size=3, padding=1),
             nn.Sigmoid(),
@@ -300,7 +300,7 @@ class CSPLayer(nn.Module):
         )
 
     def _create_feature_enhancer(self, c):
-        """特征增强模块"""
+        """Feature Enhancement Module"""
         return nn.Sequential(
             nn.Conv2d(c, c, kernel_size=1),
             nn.BatchNorm2d(c),
@@ -312,7 +312,7 @@ class CSPLayer(nn.Module):
         )
 
     def _create_residual_path(self, c):
-        """残差路径模块"""
+        """Residual path module"""
         return nn.Sequential(
             nn.Conv2d(c, c, kernel_size=1),
             nn.BatchNorm2d(c),
@@ -325,7 +325,7 @@ class CSPLayer(nn.Module):
         )
 
     def _extended_forward(self, x):
-        """扩展前向传播"""
+        """Extended Forward Propagation"""
         residual = x
         x = self.feature_enhancer(x)
         x = self.deform_conv(x)
