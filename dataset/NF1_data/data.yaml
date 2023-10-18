@@ -1,0 +1,5 @@
+train: ../wwriterdataset1008/train/images
+val: ../wwriterdataset1008/valid/images
+
+nc: 2  # number of classes
+names: ['NF1', 'healthy skin']
