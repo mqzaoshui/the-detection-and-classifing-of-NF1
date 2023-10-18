@@ -35,6 +35,7 @@ I have modified certain code in the backbone section of yolov5 to introduce the 
 
 
 
+
 ### Inference module
 
 For inference module:
@@ -43,6 +44,12 @@ For inference module:
 python ./code/inference.py
 ```
 Here I have extrapolated one of the images its shown below:
+
+<div align="center">
+    <a href="./">
+        <img src="results/test.png" width="80%"/>
+    </a>
+</div>
 
 
 ### Analysis of results
