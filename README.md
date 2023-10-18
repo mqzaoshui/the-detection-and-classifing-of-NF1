@@ -33,6 +33,66 @@ python ./code/train.py --data ./dataset/NF1_data/data.yaml --weight ./pretrain.p
 
 I have modified certain code in the backbone section of yolov5 to introduce the self-attention mechanism, here is the code for my modified section:
 
+The following part is create the self-attention moduls:
+```shell
+# Add the transformer moduls
+    def _create_transformer_attention(self, c):
+        """Transformer-based Self-Attention Mechanism"""
+        return nn.MultiheadAttention(embed_dim=c, num_heads=8)
+```
+Then choose BIFPN (Bidirectional Feature Pyramid Network) is a feature fusion method commonly used in target detection and image segmentation tasks. It is a modification of FPN (Feature Pyramid Network), which achieves more efficient feature fusion and information flow through bidirectional top-down and bottom-up paths.
+```shell
+    def _create_bifpn(self, c):
+        """BIFPN feature fusion method"""
+        layers = [
+            nn.Conv2d(c, c, kernel_size=3, padding=1),
+            nn.BatchNorm2d(c),
+            nn.ReLU(),
+            nn.Conv2d(c, c, kernel_size=1)
+        ]
+        return nn.Sequential(*layers)
+```
+Here are the various calls to the attention mechanism:
+-SE Attention Module is a feature recalibration technique that enhances the representation of the network by learning the importance weights of each channel.
+-CBAM is a visual attention mechanism that contains both channel attention and spatial attention components for enhancing the performance of convolutional neural networks.
+-SA Attention Module is a self-attention mechanism that allows the model to focus on different parts of the sequence while processing the sequence data.
+-Gated Attention Module controls the flow of information by introducing a gating mechanism that allows the network to learn to attend to different parts of the input in different situations.
+```shell
+    def _create_se(self, c):
+        """SE Attention Module"""
+        return nn.Sequential(
+            nn.AdaptiveAvgPool2d(1),
+            nn.Conv2d(c, c // 16, 1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(c // 16, c, 1),
+            nn.Sigmoid()
+        )
+
+ def _create_cbam(self, c):
+        """CBAM Attention Module"""
+        return nn.Sequential(
+            nn.Conv2d(c, c, kernel_size=7, padding=3, groups=c),
+            nn.BatchNorm2d(c),
+            nn.Sigmoid()
+        )
+
+    def _create_sa(self, c):
+        """SA Attention Module"""
+        return nn.Sequential(
+            nn.Conv2d(c, c, kernel_size=1),
+            nn.BatchNorm2d(c),
+            nn.Sigmoid()
+        )
+
+    def _create_gate_attention(self, c):
+        """Gated Attention Module"""
+        return nn.Sequential(
+            nn.Conv2d(c, c, kernel_size=3, padding=1),
+            nn.Sigmoid(),
+            nn.Conv2d(c, c, kernel_size=1),
+        )
+
+```
 
 
 
