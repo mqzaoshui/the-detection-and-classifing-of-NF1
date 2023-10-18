@@ -53,10 +53,10 @@ Then choose BIFPN (Bidirectional Feature Pyramid Network) is a feature fusion me
         return nn.Sequential(*layers)
 ```
 Here are the various calls to the attention mechanism:
--SE Attention Module is a feature recalibration technique that enhances the representation of the network by learning the importance weights of each channel.
--CBAM is a visual attention mechanism that contains both channel attention and spatial attention components for enhancing the performance of convolutional neural networks.
--SA Attention Module is a self-attention mechanism that allows the model to focus on different parts of the sequence while processing the sequence data.
--Gated Attention Module controls the flow of information by introducing a gating mechanism that allows the network to learn to attend to different parts of the input in different situations.
+- SE Attention Module is a feature recalibration technique that enhances the representation of the network by learning the importance weights of each channel.
+- CBAM is a visual attention mechanism that contains both channel attention and spatial attention components for enhancing the performance of convolutional neural networks.
+- SA Attention Module is a self-attention mechanism that allows the model to focus on different parts of the sequence while processing the sequence data.
+- Gated Attention Module controls the flow of information by introducing a gating mechanism that allows the network to learn to attend to different parts of the input in different situations.
 ```shell
     def _create_se(self, c):
         """SE Attention Module"""
