@@ -65,7 +65,7 @@ where the left side is the predicted image and the right side is the actual labe
 <div align="center">
     <a href="./">
         <img src="results/val_batch0_pred.jpg" width = "50%"/>
-        <img src="results/train_batch0_labels.jpg" width = "50%"/>
+        <img src="results/val_batch0_labels.jpg" width = "50%"/>
     </a>
 </div>
 
