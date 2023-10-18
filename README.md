@@ -47,11 +47,32 @@ Here I have extrapolated one of the images its shown below:
 
 ### Analysis of results
 
+What I will show below are the predicted and processed images for each batch during training as follows:
+
 </div>
 <div align="center">
     <a href="./">
-        <img src="/xxs-out-test003.jpg" width = "30%"/>
-        <img src="assets/v2-xs-out-test003.jpg" width = "30%"/>
-        <img src="assets/v2-s-out-test003.jpg" width = "30%"/>
+        <img src="results/train_batch0.jpg" width = "30%"/>
+        <img src="results/train_batch1.jpg" width = "30%"/>
+        <img src="results/train_batch2.jpg" width = "30%"/>
+    </a>
+</div>
+
+Below I will show the predicted and actual labeled images for labeling, 
+where the left side is the predicted image and the right side is the actual labeled image:
+
+</div>
+<div align="center">
+    <a href="./">
+        <img src="results/val_batch0_pred.jpg" width = "50%"/>
+        <img src="results/train_batch0_labels.jpg" width = "50%"/>
+    </a>
+</div>
+
+The last thing I will show is the training loss function and the line graph of various metrics with the number of training rounds:
+
+<div align="center">
+    <a href="./">
+        <img src="results/results.png" width="80%"/>
     </a>
 </div>
